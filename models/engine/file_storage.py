@@ -14,8 +14,20 @@ if __name__ == "__main__":
 
 
 class FileStorage(BaseModel):
-    """ This is a file class """
+    """ This is the FileStorage class"""
 
-    __file_path = ""
+    __file_path = "file.json"
     __objects = {}
+
+
+    def all(self):
+        """ Returns the dictionary of the objects """
+        return self.__objects
+
+    def new(self, obj):
+        """ This function sets the object in the dictionary with its id """
+        key = f"{obj.__class__.__name__}.{obj.id}"
+        __objects[key] = obj
+
+    def save(self):
 
