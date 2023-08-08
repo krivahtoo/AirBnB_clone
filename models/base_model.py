@@ -3,12 +3,11 @@
 """
 from uuid import uuid4
 from datetime import datetime
-
+import models
 
 class BaseModel:
     """defines all common attributes/methods for other classes
     """
-
     def __init__(self, *args, **kwargs):
         if len(kwargs) > 0:
             for key, val in kwargs.items():
@@ -19,6 +18,7 @@ class BaseModel:
             self.id = uuid4()
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            models.storage.new(self)
 
     def __str__(self) -> str:
         """return string represention"""
@@ -33,6 +33,8 @@ class BaseModel:
         the current datetime
         """
         self.updated_at = datetime.now()
+        models.storage.save()
+
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of __dict__
