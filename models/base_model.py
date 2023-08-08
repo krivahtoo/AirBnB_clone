@@ -3,16 +3,22 @@
 """
 from uuid import uuid4
 from datetime import datetime
-from engine.file_storage import storage
+import models
 
 class BaseModel:
     """defines all common attributes/methods for other classes
     """
-
-    def __init__(self):
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+    def __init__(self, *args, **kwargs):
+        if len(kwargs) > 0:
+            for key, val in kwargs.items():
+                if key in ["updated_at", "created_at"]:
+                    val = datetime.fromisoformat(val)
+                self.__dict__[key] = val
+        else:
+            self.id = uuid4()
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            models.storage.new(self)
 
     def __str__(self) -> str:
         """return string represention"""
@@ -27,7 +33,7 @@ class BaseModel:
         the current datetime
         """
         self.updated_at = datetime.now()
-        super().__init__(self, *args, *kwargs):
+        models.storage.save()
 
 
     def to_dict(self):
