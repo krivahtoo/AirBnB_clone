@@ -28,26 +28,25 @@ class FileStorage(BaseModel):
 
     def new(self, obj):
         """ This function sets the object in the dictionary with its id """
-        if obj not None:
-            key = f"{obj.__class__.__name__}.{obj.id}"
-            __objects[key] = obj
+        key = f"{obj.__class__.__name__}.{obj.id}"
+        __objects[key] = obj
 
     def save(self):
         """ serializes objects to json file """
         new_list = []
 
         for key, obj in self.__objects:
-            new_list.append(self.to_dict(obj))
+            new_list.append({'key': key, 'object': obj.to_dict()})
         json_string = json.dumps(new_list)
 
-        with open(file_path, mode='w', encoding="utf-8") as a_file:
+        with open(self.__file_path, mode='w', encoding="utf-8") as a_file:
             a_file.write(json_string)
     
     def reload(self):
         """ Deserializes objects to json file """
-        if os.path.exist(file_path):
-            with open(file_path, mode='r', encoding="utf-8") as a_file:
+        if os.path.exists(self.__file_path):
+            with open(self.__file_path, mode='r', encoding="utf-8") as a_file:
                 json_string = a_file.read()
 
-            json_list = json.loads(json_string)
-            return json_list
+            json_dict = json.loads(json_string)
+            return json_dict

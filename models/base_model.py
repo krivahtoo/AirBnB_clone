@@ -3,14 +3,14 @@
 """
 from uuid import uuid4
 from datetime import datetime
-
+from engine.file_storage import storage
 
 class BaseModel:
     """defines all common attributes/methods for other classes
     """
 
     def __init__(self):
-        self.id = uuid4()
+        self.id = str(uuid4())
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
@@ -27,6 +27,8 @@ class BaseModel:
         the current datetime
         """
         self.updated_at = datetime.now()
+        super().__init__(self, *args, *kwargs):
+
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of __dict__
