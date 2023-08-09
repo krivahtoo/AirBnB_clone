@@ -12,7 +12,6 @@ class HBNBCommand(cmd.Cmd):
     """ This class manages the CMD methods """
     prompt = "(hbnb) "
 
-
     def do_EOF(self, args):
         """ this function will implement the EOF command """
         return True
@@ -21,7 +20,6 @@ class HBNBCommand(cmd.Cmd):
         """ Quit command to exit the program
         """
         return True
-
 
 
 if __name__ == '__main__':
