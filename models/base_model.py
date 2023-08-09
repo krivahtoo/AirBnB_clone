@@ -5,6 +5,7 @@ from uuid import uuid4
 from datetime import datetime
 import models
 
+
 class BaseModel:
     """defines all common attributes/methods for other classes
     """
@@ -15,7 +16,7 @@ class BaseModel:
                     val = datetime.fromisoformat(val)
                 self.__dict__[key] = val
         else:
-            self.id = uuid4()
+            self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             models.storage.new(self)
@@ -34,7 +35,6 @@ class BaseModel:
         """
         self.updated_at = datetime.now()
         models.storage.save()
-
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of __dict__
