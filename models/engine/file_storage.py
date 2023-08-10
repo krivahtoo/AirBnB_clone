@@ -9,6 +9,7 @@ import sys
 import json
 import os
 from models.base_model import BaseModel
+from models.user import User
 sys.path.append("..")
 
 if __name__ == "__main__":
