@@ -18,7 +18,7 @@ if __name__ == "__main__":
 class FileStorage:
     """ This is the FileStorage class"""
 
-    __file_path = "file.json"
+    __file_path = "/models/engine/files.json"
     __objects = {}
 
     def all(self):
@@ -32,9 +32,9 @@ class FileStorage:
 
     def save(self):
         """ serializes objects to json file """
-        with open(FileStorage.__file_path, mode='w', encoding="utf-8") as a:
+        with open(self.__file_path, mode='w', encoding="utf-8") as a:
             new_dict = {}
-            new_dict.update(FileStorage.__objects)
+            new_dict.update(self.__objects)
             for key, obj in self.__objects.items():
                 new_dict[key] = obj.to_dict()
             json.dump(new_dict, a)
