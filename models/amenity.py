@@ -1,13 +1,12 @@
 #!/usr/bin/python3
 # -*- encoding: utf-8 -*-
-"""defines City class
+"""defines Amenity class
 """
 from models.base_model import BaseModel
 
 
-class City(BaseModel):
-    """City class holds city's data"""
-    state_id = ""
+class Amenity(BaseModel):
+    """Amenity class holds amenity info"""
     name = ""
 
     def __init__(self, *args, **kwargs):
