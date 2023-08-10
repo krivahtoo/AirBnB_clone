@@ -7,15 +7,15 @@
 """
 import cmd
 from models.base_model import BaseModel
-from models.engine.file_storage import FileStorage as storage
-
+from models.__init__ import storage
+from models.engine.file_storage import FileStorage
 
 class HBNBCommand(cmd.Cmd):
     """ This class manages the CMD methods """
     prompt = "(hbnb) "
 
     class_names = {
-            BaseModel : 'BaseModel'
+            BaseModel: 'BaseModel'
             }
 
     def do_EOF(self, args):
@@ -40,18 +40,47 @@ class HBNBCommand(cmd.Cmd):
                     new_instance.save()
                     print(f"{new_instance.id}")
 
-    def do_show(self, *args):
+    def do_show(self, args):
         """ The show function prints the base model id """
-        if len(args) is None:
+        argument = args.split()
+
+        if len(argument) == 0:
             print("** class name missing **")
-        elif args[1] is None:
+        elif len(argument) == 1:
             print("** instance id missing")
-        elif args[1] not in class_names.values():
+        elif argument[0] not in self.class_names.values():
             print("** class doesn't exist **")
         else:
-            print(storage.all())
+            for key, value in self.class_names.items():
+                if argument[0] == value:
+                    class_dict = storage.all()
+                    instance = f"{argument[0]}.{argument[1]}"
+                    if instance not in class_dict:
+                        print("** no instance found **")
+                    else:
+                        instance_dict = class_dict[instance]
+                        print(instance_dict)
 
 
+    def do_destroy(self, args):
+        """ The destroy function Deletes an instance """
+        argument = args.split()
+
+        if len(argument) == 0:
+            print("** class name missing **")
+        elif len(argument) == 1:
+            print("** instance id missing")
+        elif argument[0] not in self.class_names.values():
+            print("** class doesn't exist **")
+        else:
+            for key, value in self.class_names.items():
+                if argument[0] == value:
+                    instance = f"{argument[0]}.{argument[1]}"
+                    if instance not in storage.all():
+                        print("** no instance found **")
+                    else:
+                        del instance
+                        storage.save()
 
 
 if __name__ == '__main__':

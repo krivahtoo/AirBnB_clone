@@ -19,7 +19,7 @@ if __name__ == "__main__":
 class FileStorage:
     """ This is the FileStorage class"""
 
-    __file_path = "/models/engine/files.json"
+    __file_path = "models/engine/files.json"
     __objects = {}
 
     def all(self):
