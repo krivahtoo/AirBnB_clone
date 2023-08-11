@@ -82,6 +82,7 @@ class HBNBCommand(cmd.Cmd):
                         print("** no instance found **")
                     else:
                         del class_dict[instance]
+                        storage.save()
                         
 
     def do_all(self, model):
