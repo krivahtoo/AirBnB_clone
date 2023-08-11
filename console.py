@@ -60,6 +60,7 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         instance_dict = class_dict[instance]
                         print(instance_dict)
+                        storage.save()
 
 
     def do_destroy(self, args):
@@ -76,12 +77,30 @@ class HBNBCommand(cmd.Cmd):
             for key, value in self.class_names.items():
                 if argument[0] == value:
                     instance = f"{argument[0]}.{argument[1]}"
-                    if instance not in storage.all():
+                    class_dict = storage.all()
+                    if instance not in class_dict:
                         print("** no instance found **")
                     else:
-                        del instance
-                        storage.save()
+                        del class_dict[instance]
+                        
 
+    def do_all(self, model):
+        """ The all function prints a list of all the instances """
+        if len(model) > 0 and model not in self.class_names.values():
+            print("** class doesn't exist **")
+        else:
+            class_dict = storage.all()
+            object_list = []
+
+            for a_object in class_dict:
+                if len(model) > 0 and model == a_object.__class__:
+                    object_list.append(str(class_dict[a_object]))
+                else:
+                    object_list.append(str(class_dict[a_object]))
+            print(object_list)
+
+    def do_update(self, model):
+        pass
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
