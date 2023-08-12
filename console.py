@@ -48,6 +48,22 @@ class HBNBCommand(cmd.Cmd):
         """ overide help method """
         cmd.Cmd.do_help(self, args)
 
+    def precmd(self, args):
+        """ This will ovewrite default precmd """
+        if "." in args:
+            args = args.replace(".", " ").replace("(", " ").replace(")", " ")
+            args = args.split(" ")
+            if len(args) >= 3:
+                command = args[1]
+                Class = args[0]
+                ID = args[2]
+                args = f"{command} {Class} {ID}"
+            elif len(args) == 2:
+                command = args[1]
+                Class = args[0]
+                args = f"{command} {Class}"
+        return cmd.Cmd.precmd(self, args)
+
     def do_create(self, model):
         """ This function creates a New BaseModel instance """
         if model is None or len(model) < 1:
@@ -112,20 +128,31 @@ class HBNBCommand(cmd.Cmd):
                 del class_dict[instance]
                 storage.save()
 
-    def do_all(self, model):
+    def do_all(self, args):
         """ The all function prints a list of all the instances """
-        if len(model) > 0 and model not in self.class_names.values():
-            print("** class doesn't exist **")
+        model = args.split()
+        if len(model) > 1:
             return False
+        elif len(model) == 1:
+            Class = model[0]
+            class_dict = storage.all()
+            object_list = []
+
+            if Class not in self.class_names.values():
+                print("** class doesn't exist")
+                return False
+
+            for key, value in class_dict.items():
+                class_name = value.__class__.__name__
+                if Class == class_name:
+                    object_list.append(str(class_dict[key]))
+            print(object_list)
         else:
             class_dict = storage.all()
             object_list = []
 
             for a_object in class_dict:
-                if len(model) > 0 and model == a_object.__class__:
-                    object_list.append(str(class_dict[a_object]))
-                else:
-                    object_list.append(str(class_dict[a_object]))
+                object_list.append(str(class_dict[a_object]))
             print(object_list)
 
     def do_update(self, model):
