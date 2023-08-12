@@ -43,7 +43,7 @@ class BaseModel:
         obj = {}
 
         for key, val in self.__dict__.items():
-            if type(val) == datetime:
+            if type(val) is datetime:
                 obj[key] = val.isoformat()
             else:
                 obj[key] = val
