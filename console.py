@@ -10,6 +10,7 @@ from models.base_model import BaseModel
 from models.__init__ import storage
 from models.engine.file_storage import FileStorage
 
+
 class HBNBCommand(cmd.Cmd):
     """ This class manages the CMD methods """
     prompt = "(hbnb) "
@@ -62,7 +63,6 @@ class HBNBCommand(cmd.Cmd):
                         print(instance_dict)
                         storage.save()
 
-
     def do_destroy(self, args):
         """ The destroy function Deletes an instance """
         argument = args.split()
@@ -74,16 +74,13 @@ class HBNBCommand(cmd.Cmd):
         elif argument[0] not in self.class_names.values():
             print("** class doesn't exist **")
         else:
-            for key, value in self.class_names.items():
-                if argument[0] == value:
-                    instance = f"{argument[0]}.{argument[1]}"
-                    class_dict = storage.all()
-                    if instance not in class_dict:
-                        print("** no instance found **")
-                    else:
-                        del class_dict[instance]
-                        storage.save()
-                        
+            instance = f"{argument[0]}.{argument[1]}"
+            class_dict = storage.all()
+            if instance not in class_dict:
+                print("** no instance found **")
+            else:
+                del class_dict[instance]
+                storage.save()
 
     def do_all(self, model):
         """ The all function prints a list of all the instances """
@@ -101,7 +98,35 @@ class HBNBCommand(cmd.Cmd):
             print(object_list)
 
     def do_update(self, model):
-        pass
+        """ The update function updates the attribute of an instance """
+        class_dict = storage.all()
+        argument = model.split()
+
+        if len(argument) == 0:
+            print("** class name missing **")
+        elif len(argument) == 1:
+            print("** instance id missing")
+        elif len(argument) == 2:
+            print("** attribute name missing **")
+        elif len(argument) == 3:
+            print("** value missing **")
+        elif argument[0] not in self.class_names.values():
+            print("** class doesn't exist **")
+        else:
+            instance_id = f"{argument[0]}.{argument[1]}"
+            attribute = argument[2]
+            value = argument[3]
+            a_obj = class_dict[instance_id]
+            if instance_id not in class_dict:
+                print("** no instance found **")
+            else:
+                if attribute in a_obj.__class__.__dict__.keys():
+                    attribute_type = type(a_obj.__class__.__dict__[attribute])
+                    a_obj.__dict__[attribute] = attribute_type(value)
+                else:
+                    a_obj.__dict__[attribute] = value
+            storage.save()
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
