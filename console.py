@@ -44,6 +44,10 @@ class HBNBCommand(cmd.Cmd):
         """ This function will implemetn the emptyline """
         return False
 
+    def do_help(self, args):
+        """ overide help method """
+        cmd.Cmd.do_help(self, args)
+
     def do_create(self, model):
         """ This function creates a New BaseModel instance """
         if model is None or len(model) < 1:
