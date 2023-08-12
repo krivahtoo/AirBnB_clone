@@ -7,7 +7,6 @@
 """
 import sys
 import json
-import os
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -17,14 +16,11 @@ from models.place import Place
 from models.review import Review
 sys.path.append("..")
 
-if __name__ == "__main__":
-    """ do not run directly """
-
 
 class FileStorage:
     """ This is the FileStorage class"""
 
-    __file_path = "files.json"
+    __file_path = "./file.json"
     __objects = {}
 
     def all(self):
@@ -40,7 +36,6 @@ class FileStorage:
         """ serializes objects to json file """
         with open(self.__file_path, mode='w', encoding="utf-8") as a:
             new_dict = {}
-            new_dict.update(self.__objects)
             for key, obj in self.__objects.items():
                 new_dict[key] = obj.to_dict()
             json.dump(new_dict, a)
