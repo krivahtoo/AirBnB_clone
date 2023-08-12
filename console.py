@@ -40,12 +40,18 @@ class HBNBCommand(cmd.Cmd):
         """
         return True
 
+    def do_emptyline(self, args):
+        """ This function will implemetn the emptyline """
+        return False
+
     def do_create(self, model):
         """ This function creates a New BaseModel instance """
-        if model is None:
+        if model is None or len(model) < 1:
             print("** class name missing **")
+            return False
         elif model not in self.class_names.values():
             print("** class doesn't exist **")
+            return False
         else:
             for key, value in self.class_names.items():
                 if model == value:
@@ -59,10 +65,13 @@ class HBNBCommand(cmd.Cmd):
 
         if len(argument) == 0:
             print("** class name missing **")
+            return False
         elif len(argument) == 1:
-            print("** instance id missing")
+            print("** instance id missing **")
+            return False
         elif argument[0] not in self.class_names.values():
             print("** class doesn't exist **")
+            return False
         else:
             for key, value in self.class_names.items():
                 if argument[0] == value:
@@ -70,6 +79,7 @@ class HBNBCommand(cmd.Cmd):
                     instance = f"{argument[0]}.{argument[1]}"
                     if instance not in class_dict:
                         print("** no instance found **")
+                        return False
                     else:
                         instance_dict = class_dict[instance]
                         print(instance_dict)
@@ -81,15 +91,19 @@ class HBNBCommand(cmd.Cmd):
 
         if len(argument) == 0:
             print("** class name missing **")
+            return False
         elif len(argument) == 1:
             print("** instance id missing")
+            return False
         elif argument[0] not in self.class_names.values():
             print("** class doesn't exist **")
+            return False
         else:
             instance = f"{argument[0]}.{argument[1]}"
             class_dict = storage.all()
             if instance not in class_dict:
                 print("** no instance found **")
+                return False
             else:
                 del class_dict[instance]
                 storage.save()
@@ -98,6 +112,7 @@ class HBNBCommand(cmd.Cmd):
         """ The all function prints a list of all the instances """
         if len(model) > 0 and model not in self.class_names.values():
             print("** class doesn't exist **")
+            return False
         else:
             class_dict = storage.all()
             object_list = []
@@ -116,14 +131,19 @@ class HBNBCommand(cmd.Cmd):
 
         if len(argument) == 0:
             print("** class name missing **")
+            return False
         elif len(argument) == 1:
             print("** instance id missing")
+            return False
         elif len(argument) == 2:
             print("** attribute name missing **")
+            return False
         elif len(argument) == 3:
             print("** value missing **")
+            return False
         elif argument[0] not in self.class_names.values():
             print("** class doesn't exist **")
+            return False
         else:
             instance_id = f"{argument[0]}.{argument[1]}"
             attribute = argument[2]
@@ -131,6 +151,7 @@ class HBNBCommand(cmd.Cmd):
             a_obj = class_dict[instance_id]
             if instance_id not in class_dict:
                 print("** no instance found **")
+                return False
             else:
                 if attribute in a_obj.__class__.__dict__.keys():
                     attribute_type = type(a_obj.__class__.__dict__[attribute])
