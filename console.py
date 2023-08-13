@@ -62,6 +62,12 @@ class HBNBCommand(cmd.Cmd):
                 command = args[1]
                 Class = args[0]
                 args = f"{command} {Class}"
+            elif len(args) >= 4:
+                command = args[1]
+                Class = arg[0]
+                ID = args[2]
+                args = f"{command} {Class} {ID} {args[3]} {args[4]}"
+
         return cmd.Cmd.precmd(self, args)
 
     def do_create(self, model):
@@ -154,6 +160,27 @@ class HBNBCommand(cmd.Cmd):
             for a_object in class_dict:
                 object_list.append(str(class_dict[a_object]))
             print(object_list)
+
+    def do_count(self, model):
+        """ This Function will count and return number of instances """
+        class_dict = storage.all()
+        argument = model.split()
+
+        if len(argument) == 0:
+            print("** class name missing **")
+        elif len(argument) > 0:
+            Class = argument[0]
+            count = 0
+
+            if Class not in self.class_names.values():
+                print("** class doesn't exist")
+                return False
+            else:
+                for key, value in class_dict.items():
+                    class_name = value.__class__.__name__
+                    if Class == class_name:
+                        count += 1
+                print(count)
 
     def do_update(self, model):
         """ The update function updates the attribute of an instance """
